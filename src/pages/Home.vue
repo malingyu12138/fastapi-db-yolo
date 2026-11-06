@@ -1,7 +1,7 @@
 <script setup>
 
 import Cookies from 'js-cookie'
-import { loginCurrentInfo } from '@/api/userApi'
+import { loginCurrentInfo, logoutCurrentInfo } from '@/api/userApi'
 import { ref, onMounted } from 'vue'
 import { messageOpen, messageShow } from '@/utils/notify'
 import { useRouter, useRoute } from 'vue-router'
@@ -31,7 +31,10 @@ const logout = async () => {
   try {
     await messageShow('warning', '确定要退出登录吗？', '提示')
 
-    console.log('logout success')
+    const { data: { jti, message } } = await logoutCurrentInfo()
+
+    console.log('message', message);
+    messageOpen('success', message)
     Cookies.remove('access_token')
     router.push('/login')
 
@@ -58,7 +61,7 @@ onMounted(() => {
     <!-- Header 区域 -->
     <el-header class="header">
       <h2>管理系统</h2>
-      
+
       <el-button type="danger" @click="logout">{{ userInfo?.username }}退出登录</el-button>
     </el-header>
 
@@ -67,7 +70,7 @@ onMounted(() => {
       <el-aside width="200px" class="aside">
         <!-- :default-active 保证高亮当前路由，router属性使点击菜单项自动跳转 -->
         <el-menu :default-active="route.path" router class="aside-menu">
-         
+
 
           <el-menu-item index="/dashboard">
             <el-icon>
@@ -84,7 +87,7 @@ onMounted(() => {
             </el-icon>
             <span>设置</span>
           </el-menu-item>
-          
+
         </el-menu>
       </el-aside>
 
@@ -101,6 +104,7 @@ onMounted(() => {
 .layout-container {
   height: 100vh;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -108,13 +112,17 @@ onMounted(() => {
   background-color: #545c64;
   color: #fff;
 }
+
 .aside {
   background-color: #f5f7fa;
   border-right: 1px solid #e6e6e6;
 }
+
 .menu-link {
-  text-decoration: none; /* 去除 router-link 默认下划线 */
+  text-decoration: none;
+  /* 去除 router-link 默认下划线 */
 }
+
 .main-content {
   background-color: #fff;
   padding: 20px;

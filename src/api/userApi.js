@@ -1,6 +1,6 @@
 import server from '@/utils/requestServer'
 
-const loginAPI = async(data) => {
+const loginAPI = async (data) => {
     return server({
         url: '/api/v1/auth/login',
         method: 'post',
@@ -8,16 +8,27 @@ const loginAPI = async(data) => {
     })
 }
 
-const loginCurrentInfo = async() => {
+const loginCurrentInfo = async () => {
     return server({
         url: '/api/v1/auth/me',
         method: 'get',
-      
-        
+
+
     })
 }
 
+const logoutCurrentInfo = async () => {
+    return server({
+        url: '/api/v1/auth/logout',
+        method: 'get',
+
+
+    })
+}
+
+
 export {
     loginAPI,
-    loginCurrentInfo
+    loginCurrentInfo,
+    logoutCurrentInfo
 }

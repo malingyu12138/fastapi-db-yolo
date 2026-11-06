@@ -10,16 +10,16 @@ import Cookies from 'js-cookie'
 const router = useRouter()
 const loginForm = reactive({
     email: '',
-    password: ''
+    password_hash: ''
 })
 const refForm = ref(null)
 
-const rules= {
+const rules = {
     email: [
         { required: true, message: '请输入邮箱', trigger: 'blur' },
         { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
     ],
-    password:[
+    password_hash: [
         { required: true, message: '请输入密码', trigger: 'blur' },
         { min: 6, message: '密码长度不能小于6位', trigger: 'blur' }
     ]
@@ -27,25 +27,25 @@ const rules= {
 
 
 
-const handleLogin = async() => {
+const handleLogin = async () => {
     // 此处可添加表单校验与登录请求逻辑
     console.log('登录信息：', loginForm)
-    try{
-        const res =await loginAPI(loginForm)
+    try {
+        const res = await loginAPI(loginForm)
         // console.log('res',res);
-        if(res.status===200){
+        if (res.status === 200) {
             Cookies.set('access_token', res.data.access_token, { expires: 0.1 })
-            console.log('res.message',res.data.message);
+            console.log('res.message', res.data.message);
             router.push('/home')
-            messageOpen('success',res.data.message)
+            messageOpen('success', res.data.message)
         }
-            
-    } catch (err){
-        console.log('err',err);
-        messageOpen('error',err)
-    
+
+    } catch (err) {
+        console.log('err', err);
+        messageOpen('error', err)
+
     }
-   
+
 }
 
 
@@ -75,17 +75,17 @@ const submitForm = () => {
                     <h2 class="title">系统登录</h2>
                     <el-form ref="refForm" :rules="rules" :model="loginForm" label-position="top">
                         <el-form-item label="Email" prop="email">
-                            <el-input v-model="loginForm.email" placeholder="请输入 Email"  clearable>
+                            <el-input v-model="loginForm.email" placeholder="请输入 Email" clearable>
                                 <template #prefix>
-                                   <el-icon>
+                                    <el-icon>
                                         <User />
                                     </el-icon>
                                 </template>
                             </el-input>
 
                         </el-form-item>
-                        <el-form-item label="Password" prop="password">
-                            <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"
+                        <el-form-item label="password" prop="password_hash">
+                            <el-input v-model="loginForm.password_hash" type="password_hash" placeholder="请输入密码"
                                 show-password>
                                 <template #prefix>
                                     <el-icon>
