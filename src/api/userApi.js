@@ -26,9 +26,18 @@ const logoutCurrentInfo = async () => {
     })
 }
 
+const searchRsyield = async (data) => {
+    return server({
+        url: '/api/v1/books/rsyield', // 代理会自动处理 /api 前缀
+        method: 'post',
+        data
+    })
+}
+
 
 export {
     loginAPI,
     loginCurrentInfo,
-    logoutCurrentInfo
+    logoutCurrentInfo,
+    searchRsyield
 }
